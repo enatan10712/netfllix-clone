@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-netflix-black text-white overflow-x-hidden;
+  }
+}
+
+/* Custom Scrollbar - Hidden but scrollable */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.row-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+.row-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.row-scrollbar::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+.row-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
