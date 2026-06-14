@@ -43,11 +43,13 @@ const Navbar = () => {
               className="h-5 md:h-8"
             />
           </Link>
-          <ul className="hidden md:flex space-x-4">
+          <ul className="hidden lg:flex space-x-4">
             <li><Link to="/" className="text-sm font-light hover:text-gray-300 transition duration-300">Home</Link></li>
-            <li><Link to="/browse" className="text-sm font-light hover:text-gray-300 transition duration-300">TV Shows</Link></li>
-            <li><Link to="/browse" className="text-sm font-light hover:text-gray-300 transition duration-300">Movies</Link></li>
+            <li><Link to="/tv-shows" className="text-sm font-light hover:text-gray-300 transition duration-300">TV Shows</Link></li>
+            <li><Link to="/movies" className="text-sm font-light hover:text-gray-300 transition duration-300">Movies</Link></li>
+            <li><Link to="/latest" className="text-sm font-light hover:text-gray-300 transition duration-300">New & Popular</Link></li>
             <li><Link to="/my-list" className="text-sm font-light hover:text-gray-300 transition duration-300">My List</Link></li>
+            <li><Link to="/browse" className="text-sm font-light hover:text-gray-300 transition duration-300">Browse by Languages</Link></li>
           </ul>
         </div>
 
@@ -59,12 +61,13 @@ const Navbar = () => {
               alt="Profile"
               className="h-8 w-8 rounded cursor-pointer"
             />
-            <div className="absolute right-0 mt-2 w-32 bg-netflix-black border border-gray-700 hidden group-hover:block rounded shadow-lg overflow-hidden">
+            <div className="absolute right-0 mt-2 w-48 bg-netflix-black border border-gray-700 hidden group-hover:block rounded shadow-lg overflow-hidden">
+               <Link to="/profiles" className="block px-4 py-2 text-sm hover:bg-gray-800 border-b border-gray-700">Manage Profiles</Link>
               <button
                 onClick={handleLogout}
                 className="w-full text-left px-4 py-2 text-sm hover:bg-gray-800"
               >
-                Sign out
+                Sign out of Netflix
               </button>
             </div>
           </div>
