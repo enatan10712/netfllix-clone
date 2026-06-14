@@ -6,6 +6,10 @@ import Signup from './pages/Signup';
 import Search from './pages/Search';
 import MyList from './pages/MyList';
 import Browse from './pages/Browse';
+import TVShows from './pages/TVShows';
+import MoviesPage from './pages/MoviesPage';
+import Latest from './pages/Latest';
+import Profiles from './pages/Profiles';
 import Navbar from './components/Navbar';
 import { useAuth } from './context/AuthContext';
 
@@ -35,9 +39,29 @@ function App() {
             <Home />
           </ProtectedRoute>
         } />
-        <Route path="/browse" element={
+        <Route path="/profiles" element={
           <ProtectedRoute>
-            <Browse />
+            <Profiles />
+          </ProtectedRoute>
+        } />
+        <Route path="/tv-shows" element={
+          <ProtectedRoute>
+            <TVShows />
+          </ProtectedRoute>
+        } />
+        <Route path="/movies" element={
+          <ProtectedRoute>
+            <MoviesPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/latest" element={
+          <ProtectedRoute>
+            <Latest />
+          </ProtectedRoute>
+        } />
+        <Route path="/my-list" element={
+          <ProtectedRoute>
+            <MyList />
           </ProtectedRoute>
         } />
         <Route path="/search" element={
@@ -45,9 +69,9 @@ function App() {
             <Search />
           </ProtectedRoute>
         } />
-        <Route path="/my-list" element={
+        <Route path="/browse" element={
           <ProtectedRoute>
-            <MyList />
+            <Browse />
           </ProtectedRoute>
         } />
         <Route path="/login" element={
