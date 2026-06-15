@@ -8,3 +8,10 @@ Re-optimizing dependencies because lockfile has changed
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
+3:13:31 AM [vite] hmr update /src/App.jsx, /src/index.css
+3:13:31 AM [vite] hmr update /src/App.jsx, /src/index.css
+3:14:02 AM [vite] hmr update /src/components/Navbar.jsx, /src/index.css
+3:14:32 AM [vite] page reload src/components/MovieCard.jsx
+3:15:08 AM [vite] page reload src/components/Banner.jsx
+3:15:47 AM [vite] page reload src/components/Row.jsx
+3:16:19 AM [vite] page reload src/components/Modal.jsx
