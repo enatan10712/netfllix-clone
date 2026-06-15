@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import SearchBar from './SearchBar';
+import { motion } from 'framer-motion';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 0);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -32,40 +30,60 @@ const Navbar = () => {
 
   if (!currentUser) return null;
 
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'TV Shows', path: '/tv-shows' },
+    { name: 'Movies', path: '/movies' },
+    { name: 'New & Popular', path: '/latest' },
+    { name: 'My List', path: '/my-list' },
+  ];
+
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-colors duration-500 ${isScrolled ? 'bg-netflix-black' : 'bg-transparent bg-gradient-to-b from-black/80 to-transparent'}`}>
-      <div className="flex items-center justify-between px-4 py-4 md:px-12 md:py-6">
-        <div className="flex items-center space-x-2 md:space-x-10">
+    <nav className={`fixed top-0 w-full z-[80] transition-all duration-500 ${isScrolled ? 'bg-[#141414] py-3' : 'bg-transparent bg-gradient-to-b from-black/80 to-transparent py-5'}`}>
+      <div className="flex items-center justify-between px-4 md:px-12">
+        <div className="flex items-center space-x-10">
           <Link to="/">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
               alt="Netflix"
-              className="h-5 md:h-8"
+              className="h-6 md:h-8"
             />
           </Link>
-          <ul className="hidden lg:flex space-x-4">
-            <li><Link to="/" className="text-sm font-light hover:text-gray-300 transition duration-300">Home</Link></li>
-            <li><Link to="/tv-shows" className="text-sm font-light hover:text-gray-300 transition duration-300">TV Shows</Link></li>
-            <li><Link to="/movies" className="text-sm font-light hover:text-gray-300 transition duration-300">Movies</Link></li>
-            <li><Link to="/latest" className="text-sm font-light hover:text-gray-300 transition duration-300">New & Popular</Link></li>
-            <li><Link to="/my-list" className="text-sm font-light hover:text-gray-300 transition duration-300">My List</Link></li>
-            <li><Link to="/browse" className="text-sm font-light hover:text-gray-300 transition duration-300">Browse by Languages</Link></li>
+          <ul className="hidden lg:flex space-x-5">
+            {navLinks.map((link) => (
+              <li key={link.path}>
+                <Link
+                  to={link.path}
+                  className={`text-sm transition duration-300 hover:text-gray-300 ${location.pathname === link.path ? 'font-bold' : 'font-light text-gray-200'}`}
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-6">
           <SearchBar />
           <div className="relative group">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
-              alt="Profile"
-              className="h-8 w-8 rounded cursor-pointer"
-            />
-            <div className="absolute right-0 mt-2 w-48 bg-netflix-black border border-gray-700 hidden group-hover:block rounded shadow-lg overflow-hidden">
-               <Link to="/profiles" className="block px-4 py-2 text-sm hover:bg-gray-800 border-b border-gray-700">Manage Profiles</Link>
+            <div className="flex items-center space-x-2 cursor-pointer">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
+                alt="Profile"
+                className="h-8 w-8 rounded"
+              />
+              <motion.div
+                animate={{ rotate: 0 }}
+                className="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[5px] border-t-white group-hover:rotate-180 transition-transform duration-300"
+              />
+            </div>
+
+            <div className="absolute right-0 mt-2 w-48 bg-black/90 border border-gray-800 hidden group-hover:block rounded-sm shadow-2xl overflow-hidden backdrop-blur-md">
+               <Link to="/profiles" className="block px-4 py-3 text-sm hover:bg-white/10 transition">Manage Profiles</Link>
+               <div className="h-[1px] bg-gray-800 mx-2" />
               <button
                 onClick={handleLogout}
-                className="w-full text-left px-4 py-2 text-sm hover:bg-gray-800"
+                className="w-full text-left px-4 py-3 text-sm hover:bg-white/10 transition"
               >
                 Sign out of Netflix
               </button>

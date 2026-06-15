@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import tmdb, { requests } from '../services/tmdb';
 import Modal from './Modal';
+import { Play, Info } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { SkeletonBanner } from './Skeletons';
 
 const Banner = () => {
   const [movie, setMovie] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBannerMovie = async () => {
@@ -15,6 +19,8 @@ const Banner = () => {
         setMovie(randomMovie);
       } catch (error) {
         console.error("Error fetching banner movie:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -25,51 +31,79 @@ const Banner = () => {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   };
 
-  if (!movie) return <div className="h-[448px] bg-netflix-black" />;
+  if (loading) return <SkeletonBanner />;
+  if (!movie) return null;
 
   return (
     <header
-      className="relative h-[448px] md:h-[600px] text-white object-contain"
-      style={{
-        backgroundSize: "cover",
-        backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
-        backgroundPosition: "center center",
-      }}
+      className="relative h-[448px] md:h-[600px] text-white overflow-hidden"
     >
-      <div className="flex flex-col justify-center h-full px-4 md:px-12 bg-gradient-to-r from-netflix-black/80 via-netflix-black/20 to-transparent">
-        <h1 className="text-3xl md:text-5xl font-extrabold pb-4">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="absolute inset-0"
+      >
+        <img
+          src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
+          alt={movie?.title || movie?.name}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-netflix-black via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-netflix-black via-transparent to-transparent" />
+      </motion.div>
+
+      <div className="relative z-10 flex flex-col justify-center h-full px-4 md:px-12 space-y-4 max-w-2xl">
+        <motion.h1
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-4xl md:text-6xl font-bold"
+        >
           {movie?.title || movie?.name || movie?.original_name}
-        </h1>
+        </motion.h1>
 
-        <div className="flex space-x-3 mb-4">
+        <motion.p
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-sm md:text-lg text-gray-200 line-clamp-3 md:line-clamp-4 leading-relaxed"
+        >
+          {movie?.overview}
+        </motion.p>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="flex items-center space-x-3"
+        >
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-white text-black px-5 py-2 md:px-8 md:py-3 rounded hover:bg-white/70 font-bold transition duration-300"
+            className="flex items-center space-x-2 bg-white text-black px-6 py-2.5 rounded hover:bg-gray-200 font-bold transition duration-300"
           >
-            Play
+            <Play fill="currentColor" size={24} />
+            <span>Play</span>
           </button>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-gray-500/50 text-white px-5 py-2 md:px-8 md:py-3 rounded hover:bg-gray-500/30 font-bold transition duration-300"
+            className="flex items-center space-x-2 bg-gray-500/50 text-white px-6 py-2.5 rounded hover:bg-gray-500/40 font-bold transition duration-300 backdrop-blur-md"
           >
-            More Info
+            <Info size={24} />
+            <span>More Info</span>
           </button>
-        </div>
-
-        <h2 className="w-full md:max-w-md text-sm md:text-base h-20 overflow-hidden leading-relaxed">
-          {truncate(movie?.overview, 150)}
-        </h2>
+        </motion.div>
       </div>
 
-      <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-netflix-black to-transparent" />
-
-      {isModalOpen && (
-        <Modal
-          movie={movie}
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      )}
+      <AnimatePresence>
+        {isModalOpen && (
+          <Modal
+            movie={movie}
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </header>
   );
 };

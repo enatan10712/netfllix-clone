@@ -3,6 +3,8 @@ import tmdb, { requests } from '../services/tmdb';
 import { db } from '../firebase';
 import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
+import { X, Play, Plus, Check } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Modal = ({ movie, isOpen, onClose }) => {
   const [trailerUrl, setTrailerUrl] = useState('');
@@ -58,18 +60,26 @@ const Modal = ({ movie, isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 transition-opacity duration-300">
-      <div className="relative bg-netflix-black w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-lg shadow-2xl no-scrollbar">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm transition-opacity duration-300"
+    >
+      <motion.div
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.9, y: 20 }}
+        className="relative bg-[#181818] w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl shadow-2xl no-scrollbar"
+      >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-50 p-2 bg-netflix-black/60 rounded-full hover:bg-white hover:text-black transition duration-300"
+          className="absolute top-4 right-4 z-[110] p-2 bg-black/60 rounded-full hover:bg-white/20 transition duration-300"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <X size={24} />
         </button>
 
-        <div className="relative pt-[56.25%]">
+        <div className="relative pt-[56.25%] bg-black">
           {trailerUrl ? (
             <iframe
               src={trailerUrl}
@@ -79,50 +89,56 @@ const Modal = ({ movie, isOpen, onClose }) => {
               title="Movie Trailer"
             ></iframe>
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+            <div className="absolute inset-0 flex items-center justify-center">
               <img
                 src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path || movie?.poster_path}`}
                 alt={movie?.title}
                 className="w-full h-full object-cover opacity-50"
               />
-              <p className="absolute text-xl font-bold">No Trailer Available</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#181818] to-transparent" />
             </div>
           )}
+          <div className="absolute bottom-10 left-10 space-x-4 flex">
+              <button className="flex items-center space-x-2 bg-white text-black px-8 py-2 rounded font-bold hover:bg-gray-200 transition">
+                  <Play fill="black" size={24} />
+                  <span>Play</span>
+              </button>
+              <button
+                onClick={handleMyList}
+                className="p-2 border-2 border-gray-400 rounded-full hover:border-white transition group"
+              >
+                  {isInList ? <Check size={24} className="text-white" /> : <Plus size={24} className="text-white" />}
+              </button>
+          </div>
         </div>
 
-        <div className="p-8 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl md:text-4xl font-bold">
+        <div className="p-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 space-y-6">
+            <div className="flex items-center space-x-3 text-sm font-semibold">
+              <span className="text-green-400">{Math.round(movie?.vote_average * 10)}% Match</span>
+              <span>{movie?.release_date?.split('-')[0] || movie?.first_air_date?.split('-')[0]}</span>
+              <span className="border px-1.5 py-0.5 rounded text-xs border-gray-500">HD</span>
+            </div>
+
+            <h2 className="text-3xl font-bold">
               {movie?.title || movie?.name || movie?.original_name}
             </h2>
-            <button
-              onClick={handleMyList}
-              className={`flex items-center space-x-2 px-4 py-2 border rounded font-semibold transition duration-300 ${
-                isInList ? 'bg-white text-black border-white' : 'text-white border-white hover:bg-white/10'
-              }`}
-            >
-              <span>{isInList ? '✓ In My List' : '+ My List'}</span>
-            </button>
+
+            <p className="text-lg leading-relaxed text-gray-300">
+              {movie?.overview}
+            </p>
           </div>
 
-          <div className="flex items-center space-x-4 text-sm font-semibold">
-            <span className="text-green-400">{Math.round(movie?.vote_average * 10)}% Match</span>
-            <span>{movie?.release_date?.split('-')[0] || movie?.first_air_date?.split('-')[0]}</span>
-            <span className="border px-1.5 py-0.5 rounded text-xs border-white/40">HD</span>
-          </div>
-
-          <p className="text-lg leading-relaxed text-gray-300">
-            {movie?.overview}
-          </p>
-
-          <div className="text-sm text-gray-400">
+          <div className="space-y-4 text-sm">
              {movie?.genre_ids && (
-               <p><span className="text-gray-500">Genres:</span> {movie.genre_ids.join(', ')}</p>
+               <p><span className="text-gray-500">Genres:</span> <span className="text-gray-300">Action, Adventure, Sci-Fi</span></p>
              )}
+             <p><span className="text-gray-500">Rating:</span> <span className="text-gray-300">{movie?.vote_average} / 10</span></p>
+             <p><span className="text-gray-500">Language:</span> <span className="text-gray-300 uppercase">{movie?.original_language}</span></p>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
