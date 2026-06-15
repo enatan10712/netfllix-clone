@@ -10,3 +10,20 @@
 9:33:45 PM [vite] (client) hmr update /src/index.css, /src/pages/Search.jsx, /src/pages/Browse.jsx, /src/pages/Home.jsx, /src/components/Banner.jsx, /src/components/Row.jsx, /src/components/Modal.jsx
 9:36:08 PM [vite] (client) hmr update /src/App.jsx, /src/index.css
 9:36:37 PM [vite] (client) hmr update /src/index.css, /src/components/Navbar.jsx
+2:58:41 AM [vite] (client) hmr update /src/index.css, /src/components/Banner.jsx
+2:58:48 AM [vite] (client) hmr update /src/index.css, /src/components/Row.jsx
+2:59:12 AM [vite] (client) hmr update /src/App.jsx, /src/index.css
+2:59:17 AM [vite] (client) hmr update /src/index.css, /src/components/MovieCard.jsx
+2:59:47 AM [vite] (client) hmr update /src/index.css, /src/pages/Login.jsx
+2:59:56 AM [vite] (client) hmr update /src/index.css, /src/pages/Signup.jsx
+3:00:27 AM [vite] (client) page reload index.html
+3:00:58 AM [vite] (client) hmr update /src/index.css, /src/components/Modal.jsx
+3:01:09 AM [vite] (client) hmr update /src/index.css, /src/components/Navbar.jsx
+3:02:45 AM [vite] (client) error while updating dependencies:
+Error: ENOENT: no such file or directory, open '/app/node_modules/react-router-dom/dist/index.mjs'
+    at Object.readFileSync (node:fs:440:20)
+    at extractExportsData (file:///app/node_modules/vite/dist/node/chunks/node.js:32029:26)
+    at async file:///app/node_modules/vite/dist/node/chunks/node.js:31794:23
+    at async Promise.all (index 6)
+    at async prepareRolldownOptimizerRun (file:///app/node_modules/vite/dist/node/chunks/node.js:31792:2)
+3:02:46 AM [vite] (client) [optimizer] bundling dependencies...
