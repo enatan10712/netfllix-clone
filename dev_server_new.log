@@ -15,3 +15,8 @@ Re-optimizing dependencies because lockfile has changed
 3:15:08 AM [vite] page reload src/components/Banner.jsx
 3:15:47 AM [vite] page reload src/components/Row.jsx
 3:16:19 AM [vite] page reload src/components/Modal.jsx
+3:32:26 AM [vite] hmr update /src/components/SearchBar.jsx, /src/index.css
+3:32:39 AM [vite] hmr update /src/components/Navbar.jsx, /src/index.css
+3:33:07 AM [vite] page reload src/components/Banner.jsx
+3:33:17 AM [vite] page reload src/components/MovieCard.jsx
+3:33:57 AM [vite] page reload src/components/Modal.jsx
